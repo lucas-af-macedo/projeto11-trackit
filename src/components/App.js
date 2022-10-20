@@ -7,10 +7,12 @@ import RegisterPage from './RegisterPage'
 import MyContext from '../contexts/myContext'
 import NavBar from './NavBar'
 import HabitsPage from './HabitsPage'
+import TodayPage from './TodayPage'
+import HistoryPage from './HistoryPage'
 
 export default function App(){
     const [userData,setUserData] = React.useState('')
-    const [today,setToday] = React.useState("")
+    const [today,setToday] = React.useState(0)
     return (
         <MyContext.Provider value = {{userData, setUserData, today, setToday}}>
             <BrowserRouter>
@@ -20,7 +22,9 @@ export default function App(){
                     <Routes>
                         <Route path='/' element = {<LoginPage/>} />
                         <Route path='/cadastro' element = {<RegisterPage/>} />
+                        <Route path="/hoje" element = {<TodayPage/>}/>
                         <Route path="/habitos" element = {<HabitsPage/>}/>
+                        <Route path="/historico" element = {<HistoryPage/>}/>
                     </Routes>
                 </Body>
             </BrowserRouter>

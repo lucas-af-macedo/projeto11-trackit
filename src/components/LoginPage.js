@@ -18,7 +18,7 @@ export default function LoginPage(){
         const request = axios.post(URL, body);
         request.then(answer => {
             setUserData(answer.data)
-            navigate('/habitos')
+            navigate('/hoje')
 		});
         request.catch(erro => {
             setDisabled(false)
