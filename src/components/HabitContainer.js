@@ -3,10 +3,9 @@ import MyContext from '../contexts/myContext'
 import styled from 'styled-components'
 import check from '../assets/img/check.png'
 import axios from 'axios'
-import { useNavigate } from "react-router-dom";
+
 export default function HabitContainer({f,index, listHabits, setListHabits}){
-    const navigate = useNavigate()
-    const {userData, today, setToday} = useContext(MyContext)
+    const {userData,  setToday} = useContext(MyContext)
     const [disa,setDisa] = useState(false)
     function reflash(){
         setDisa(false)

@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react'
 import MyContext from '../contexts/myContext'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
-import check from '../assets/img/check.png'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import HabitContainer from './HabitContainer'
@@ -22,11 +21,12 @@ export default function TodayPage(){
         const request = axios.get(URL, config)
         request.then(answer => {
             setListHabits(answer.data)
+            setToday((answer.data.filter((f)=>f.done).length/answer.data.length)*100)
         })
         request.catch(error => {
             navigate('/')
         })
-    },[setListHabits]);
+    },[setListHabits, navigate]);
 
     function getDay(){
         let weekDay = ''
@@ -61,7 +61,7 @@ export default function TodayPage(){
         <>
         <Container today={today}>
             <h1>{getDay()}</h1>
-            {today? <h2>{today}% dos hábitos concluídos</h2>:<h2>Nenhum hábito concluído ainda</h2>}
+            {today? <h2>{Math.round(today)}% dos hábitos concluídos</h2>:<h2>Nenhum hábito concluído ainda</h2>}
             {listHabits.map((f,index) => (
                 <HabitContainer key={f.id} f={f} index={index} listHabits={listHabits} setListHabits={setListHabits}/>
             ))}
@@ -72,11 +72,12 @@ export default function TodayPage(){
 
 const Container = styled.div`
     width: 100%;
+    min-height: 100vh;
     height: 100%;
     background: #EBEBEB;
     padding: 18px;
     padding-top: 90px;
-    padding-bottom: 120px;
+    padding-bottom: 115px;
     h1{
         font-family: 'Lexend Deca', sans-serif;
         color: #126BA5;

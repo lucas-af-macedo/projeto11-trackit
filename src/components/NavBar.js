@@ -53,6 +53,7 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 5;
     h1{
         margin: 22px;
         color: white;
@@ -81,6 +82,7 @@ const Footer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 5;
     h1{
         color: #52B6FF;
         font-weight: 400;
