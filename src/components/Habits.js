@@ -89,7 +89,7 @@ const Shure = styled.div`
 const ShureDiv = styled.div`
     height: 200px;
     width: 300px;
-    background-color: #126BA5;
+    background-color: white;
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
     display: flex;
@@ -98,9 +98,10 @@ const ShureDiv = styled.div`
     padding: 38px;
     justify-content: space-between;
     h3{
-        color: white;
+        color: #126BA5;
+        font-weight: 500;
         font-family: 'Lexend Deca', sans-serif;
-        font-size: 30px;
+        font-size: 33px;
     }
     div{
         width: 100%;
@@ -112,11 +113,17 @@ const Yes = styled.button`
     height: 40px;
     width: 90px;
     border: 0px;
+    font-weight: 500;
+    font-size: 18px;
     color: white;
-    background-color: red;
+    background-color: #CF0000;
     border-radius: 5px;
     font-family: 'Lexend Deca', sans-serif;
     cursor: pointer;
+    &:hover{
+        transition: ease 0.1s;
+        filter: brightness(1.1);
+    }
 
 `
 
@@ -124,9 +131,15 @@ const No = styled.button`
     height: 40px;
     width: 90px;
     border: 0px;
-    color: blue;
-    background-color: white;
+    font-weight: 500;
+    font-size: 18px;
+    color: white;
+    background-color: #52B6FF;
     border-radius: 5px;
     font-family: 'Lexend Deca', sans-serif;
     cursor: pointer;
+    &:hover{
+        transition: ease 0.1s;
+        filter: brightness(1.1);
+    }
 `

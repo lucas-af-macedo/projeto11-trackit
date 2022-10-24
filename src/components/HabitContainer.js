@@ -58,8 +58,12 @@ export default function HabitContainer({f,index, listHabits, setListHabits}){
             <HabitBox>
                 <h3>{f.name}</h3>
                 <RecordBox>
-                    <h4>Sequência atual: {f.currentSequence} dias</h4>
-                    <h4>Seu recorde: {f.highestSequence} dias</h4>
+                    <Now test={listHabits[index].done}>
+                    <h4>Sequência atual: </h4> <h5>{f.currentSequence} {f.currentSequence!==1? <>dias</>:<>dia</>}</h5>
+                    </Now>
+                    <Record test={(f.done)&&(f.highestSequence===f.currentSequence)}>
+                    <h4>Seu recorde:</h4> <h5>{f.highestSequence} {f.currentSequence!==1? <>dias</>:<>dia</>}</h5>
+                    </Record>
                 </RecordBox>
             </HabitBox>
             <CheckBox  onClick={done} done={f.done} disabled={disa}>
@@ -108,4 +112,25 @@ const CheckBox = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
+`
+const Now = styled.div`
+    display: flex;
+    h5{
+        margin-left: 2px;
+        margin-right: 2px;
+        color: ${props=>props.test? '#8FC549':'#666666'};;
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 13px;
+    }
+`
+
+const Record = styled.div`
+    display: flex;
+    h5{
+        margin-left: 2px;
+        margin-right: 2px;
+        color: ${props=>props.test? '#8FC549':'#666666'};
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 13px;
+    }
 `

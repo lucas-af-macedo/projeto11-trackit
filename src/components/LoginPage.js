@@ -8,6 +8,8 @@ import React, { useContext } from 'react'
 import MyContext from '../contexts/myContext'
 
 export default function LoginPage(){
+    const [message,setMessage] = useState('')
+    const [isShure,setIsShure] = useState(false)
     const { setUserData} = useContext(MyContext)
     const [disabled,setDisabled] = useState(false)
     function PostLogin(event){
@@ -24,12 +26,15 @@ export default function LoginPage(){
             setDisabled(false)
             if(erro.response.data.details){
                 if (erro.response.data.details[0]==='"email" must be a valid email'){
-                    alert('Email invalido')
+                    setIsShure(true)
+                    setMessage('Email invalido')
                 }else{
-                    alert(erro.response.data.details[0])
+                    setIsShure(true)
+                    setMessage(erro.response.data.details[0])
                 }
             }else{
-                alert(erro.response.data.message)
+                setIsShure(true)
+                setMessage(erro.response.data.message)
             }
 		});
     }
@@ -67,6 +72,14 @@ export default function LoginPage(){
                  :<p>Entrar</p>}</button>
 		    </form>
                 <h1 onClick={goToRegister} >Não tem uma conta? Cadastre-se!</h1>
+            {isShure&&<Shure onClick={()=>setIsShure(false)}>
+                <ShureDiv onClick={(e) => e.stopPropagation()}>
+                    <h3>{message}</h3>
+                    <div>
+                        <No onClick={()=>setIsShure(false)}>OK</No>
+                    </div>
+                </ShureDiv>
+        </Shure>}
         </Container>
     )
 }
@@ -126,4 +139,56 @@ const Container = styled.div`
         transition: ease 0.1s;
         filter: brightness(1.1);
     }
+`
+
+
+const Shure = styled.div`
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 7;
+    left: 0;
+    top: 0;
+`
+const ShureDiv = styled.div`
+    height: 200px;
+    width: 300px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 38px;
+    justify-content: space-between;
+    h3{
+        color: #126BA5;
+        font-weight: 500;
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 25px;
+        text-align: center;
+    }
+    div{
+        width: 60%;
+        display: flex;
+        justify-content: space-around;
+    }
+`
+
+
+const No = styled.button`
+    height: 40px;
+    width: 90px;
+    border: 0px;
+    font-weight: 500;
+    font-size: 18px;
+    color: white;
+    background-color: #52B6FF;
+    border-radius: 5px;
+    font-family: 'Lexend Deca', sans-serif;
+    cursor: pointer;
 `
