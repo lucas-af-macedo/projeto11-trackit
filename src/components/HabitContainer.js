@@ -27,7 +27,7 @@ export default function HabitContainer({f,index, listHabits, setListHabits}){
             setToday((aux.filter((f)=>f.done).length/aux.length)*100)
             setListHabits(aux)
             let URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${listHabits[index].id}/uncheck`
-            let request = axios.post(URL,'',config)
+            let request = axios.post(URL,{},config)
             request.then(answer => {
                 reflash()
             })
@@ -44,7 +44,7 @@ export default function HabitContainer({f,index, listHabits, setListHabits}){
             setToday((aux.filter((f)=>f.done).length/aux.length)*100)
             setListHabits(aux)
             let URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${listHabits[index].id}/check`
-            let request = axios.post(URL,'',config)
+            let request = axios.post(URL,{},config)
             request.then(answer => {
                 reflash()
             })

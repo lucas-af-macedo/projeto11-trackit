@@ -11,7 +11,7 @@ import 'react-calendar/dist/Calendar.css';
 
 
 export default function HistoryPage(){
-    const {userData} = useContext(MyContext)
+    const {userData, setUserData} = useContext(MyContext)
     const [value, onChange] = useState(new Date());
     const [dayList,setDayList] = useState([])
     const [done,setDone] = useState([])
@@ -21,37 +21,38 @@ export default function HistoryPage(){
     const navigate = useNavigate()
 
     useEffect(() => {
-        const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily'
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userData.token}`
-            }
-        }
-        const request = axios.get(URL, config)
-
-        request.then(answer => {
-            const listHabits = answer.data
-            setDayList(listHabits)
-            let arrayDone = []
-            let arrayNotDone = []
-
-            for(let i=0;i<listHabits.length;i++){
-                let listTest = listHabits[i].habits.filter((f)=>!f.done)
-                if(listTest.length>0){
-                    arrayNotDone.push(listHabits[i].day)
-                }else{
-                    arrayDone.push(listHabits[i].day)
+        if(userData===''){
+            navigate('/')
+        }else{
+            const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily'
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userData.token}`
                 }
             }
+            const request = axios.get(URL, config)
 
-            setDone(arrayDone)
-            setNotDone(arrayNotDone)
-        })
+            request.then(answer => {
+                const listHabits = answer.data
+                setDayList(listHabits)
+                let arrayDone = []
+                let arrayNotDone = []
 
-        request.catch(error => {
-            navigate('/')
-        })
-    },[setDayList, setDone, setNotDone, userData, navigate]);
+                for(let i=0;i<listHabits.length;i++){
+                    let listTest = listHabits[i].habits.filter((f)=>!f.done)
+                    if(listTest.length>0){
+                        arrayNotDone.push(listHabits[i].day)
+                    }else{
+                        arrayDone.push(listHabits[i].day)
+                    }
+                }
+
+                setDone(arrayDone)
+                setNotDone(arrayNotDone)
+            })
+
+        }
+    },[setDayList, setDone, setNotDone, userData, navigate, setUserData]);
 
     
     function test (e){
@@ -66,6 +67,8 @@ export default function HistoryPage(){
 
     return(
         <>
+        <Box>
+        <h1>Histórico</h1>
         <Container>
             <CalendarDiv>
                 <Calendar calendarType='US' locale='pt' onChange={test} value={value} 
@@ -99,18 +102,32 @@ export default function HistoryPage(){
                     </Describe>
                 </InfoDay>:null}
         </Container>
+        </Box>
         </>
     )
 }
 
-const Container = styled.div`
+
+const Box = styled.div`
     width: 100%;
     min-height: 100vh;
     height: 100%;
     background: #EBEBEB;
-    padding: 18px;
     padding-top: 90px;
-    padding-bottom: 120px;
+    padding-bottom: 100px;
+    h1{
+        font-family: 'Lexend Deca', sans-serif;
+        color: #126BA5;
+        font-size: 23px;
+        font-weight: 400;
+        margin-left: calc(50vw - 175px);
+    }
+`
+const Container = styled.div`
+    width: 100%;
+    height: 100%;
+    background: #EBEBEB;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -153,18 +170,22 @@ const CalendarDiv = styled.div`
     .react-calendar__tile--now.done abbr {
         background-color: transparent;
         color: #60DF60;
+        text-shadow: 1px 0 #fff, -1px 0 #fff, 0 1px #fff, 0 -1px #fff;
     }
     .react-calendar__tile--now.not-done abbr{
         background-color: transparent;
         color: #ea5766;
+        text-shadow: 1px 0 #fff, -1px 0 #fff, 0 1px #fff, 0 -1px #fff;
     }
     .react-calendar__tile--active.done abbr {
         background-color: transparent;
         color: #60DF60;
+        text-shadow: 1px 0 #fff, -1px 0 #fff, 0 1px #fff, 0 -1px #fff;
     }
     .react-calendar__tile--active.not-done abbr{
         background-color: transparent;
-        color: red;
+        color: #ea5766;
+        text-shadow: 1px 0 #fff, -1px 0 #fff, 0 1px #fff, 0 -1px #fff;
     }
 `
 const InfoDay = styled.div`

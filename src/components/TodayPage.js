@@ -8,10 +8,18 @@ import HabitContainer from './HabitContainer'
 
 export default function TodayPage(){
     const navigate = useNavigate()
-    const {userData, today, setToday} = useContext(MyContext)
+    const {userData, today, setToday, setUserData} = useContext(MyContext)
     const [listHabits,setListHabits] = useState([])
     const now = dayjs()
     useEffect(() => {
+        if(userData===''){
+            const getUser = localStorage.getItem("user") 
+            if(getUser!==null){
+                setUserData(JSON.parse(getUser))
+            }else{
+                navigate('/')
+            }
+        }
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today'
         const config = {
             headers: {
@@ -26,7 +34,7 @@ export default function TodayPage(){
         request.catch(error => {
             navigate('/')
         })
-    },[setListHabits, setToday, userData, navigate]);
+    },[setListHabits, setToday, userData, navigate, setUserData]);
 
     function getDay(){
         let weekDay = ''

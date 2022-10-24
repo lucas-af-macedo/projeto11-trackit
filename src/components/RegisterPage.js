@@ -1,21 +1,30 @@
 import styled from 'styled-components' 
 import logo from '../assets/img/logo.png'
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
 import {ThreeDots} from 'react-loader-spinner'
+import MyContext from '../contexts/myContext'
 
 
 export default function RegisterPage(){
     const [message,setMessage] = useState('')
     const [isShure,setIsShure] = useState(false)
     const [disabled,setDisabled] = useState(false)
+    const { setUserData} = useContext(MyContext)
     const [form, setForm] = useState({
         email: "",
         name: "",
         image: "",
         password: ""
       });
+    const navigate = useNavigate();
+
+    const getUser = localStorage.getItem("user") 
+    if(getUser!==null){
+        setUserData(JSON.parse(getUser))
+        navigate('/hoje')
+    }
     function PostRegister(event){
         setDisabled(true)
         event.preventDefault();
@@ -47,7 +56,6 @@ export default function RegisterPage(){
           [e.target.name]: e.target.value,
         })
       }
-    const navigate = useNavigate();
     function goToLogin(){
         navigate('/')
     }

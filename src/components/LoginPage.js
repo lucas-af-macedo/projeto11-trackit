@@ -8,10 +8,21 @@ import React, { useContext } from 'react'
 import MyContext from '../contexts/myContext'
 
 export default function LoginPage(){
+
     const [message,setMessage] = useState('')
     const [isShure,setIsShure] = useState(false)
     const { setUserData} = useContext(MyContext)
     const [disabled,setDisabled] = useState(false)
+    const navigate = useNavigate();
+    const [form, setForm] = useState({
+        email: "",
+        password: ""
+    });
+    const getUser = localStorage.getItem("user") 
+    if(getUser!==null){
+        setUserData(JSON.parse(getUser))
+        navigate('/hoje')
+    }
     function PostLogin(event){
         setDisabled(true)
         event.preventDefault();
@@ -20,6 +31,8 @@ export default function LoginPage(){
         const request = axios.post(URL, body);
         request.then(answer => {
             setUserData(answer.data)
+            const user = JSON.stringify(answer.data)
+            localStorage.setItem("user", user)
             navigate('/hoje')
 		});
         request.catch(erro => {
@@ -38,20 +51,19 @@ export default function LoginPage(){
             }
 		});
     }
-    const [form, setForm] = useState({
-        email: "",
-        password: ""
-    });
+
+
     function handleForm (e) {
         setForm({
         ...form,
         [e.target.name]: e.target.value,
         }) 
     }
-    const navigate = useNavigate();
+
     function goToRegister(){
         navigate('/cadastro')
     }
+
     return(
         <Container>
             <img src={logo} alt = 'logo'/>
@@ -79,7 +91,7 @@ export default function LoginPage(){
                         <No onClick={()=>setIsShure(false)}>OK</No>
                     </div>
                 </ShureDiv>
-        </Shure>}
+            </Shure>}
         </Container>
     )
 }

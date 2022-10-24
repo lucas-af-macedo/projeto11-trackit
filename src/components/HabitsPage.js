@@ -10,7 +10,7 @@ import {ThreeDots} from 'react-loader-spinner'
 export default function HabitsPage(){
     const [disabled,setDisabled] = useState(false)
     const navigate = useNavigate()
-    const {userData} = useContext(MyContext)
+    const {userData, setUserData} = useContext(MyContext)
     const [addHabit,setAddHabit] = useState(false)
     const [daysList, setDaysList] = useState([])
     const [inputValue,setInputValue] = useState('')
@@ -28,13 +28,14 @@ export default function HabitsPage(){
         request.then(answer => {
             setHabitsList(answer.data)
         })
-        request.catch(error => {
-            navigate('/')
-        })
-    },[setHabitsList, userData,navigate])
+    },[setHabitsList, userData])
     useEffect(() => {
-        response()
-    },[response]);
+        if(userData===''){
+            navigate('/')
+        }else{
+            response()
+        }
+    },[response, navigate, setUserData, userData]);
 
     function wipe(){
         setAddHabit(false)
