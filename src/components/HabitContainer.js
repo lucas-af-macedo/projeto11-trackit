@@ -55,7 +55,7 @@ export default function HabitContainer({f,index, listHabits, setListHabits}){
     }
     return(
         <Habit key={f.id}>
-            <HabitBox>
+            <HabitBox data-identifier="today-infos">
                 <h3>{f.name}</h3>
                 <RecordBox>
                     <Now test={listHabits[index].done}>
@@ -66,7 +66,7 @@ export default function HabitContainer({f,index, listHabits, setListHabits}){
                     </Record>
                 </RecordBox>
             </HabitBox>
-            <CheckBox  onClick={done} done={f.done} disabled={disa}>
+            <CheckBox  data-identifier="done-habit-btn" onClick={done} done={f.done} disabled={disa}>
                 <img src={check} alt='check'/>
             </CheckBox>
         </Habit>

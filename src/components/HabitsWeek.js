@@ -4,7 +4,7 @@ export default function HabitsWeek({days,day, index}){
     const selected = days.findIndex((f)=>f===index)!==-1
     return(
         <>
-        <Day selected={selected}>{day}</Day>
+        <Day data-identifier="week-day-btn" selected={selected}>{day}</Day>
         </>
     )
 }

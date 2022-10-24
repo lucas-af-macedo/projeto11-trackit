@@ -63,10 +63,10 @@ export default function RegisterPage(){
         <Container>
             <img src={logo} alt = 'logo'/>
             <form onSubmit={PostRegister}>
-                <input placeholder='email' name='email' type='email' required value={form.email} onChange={handleForm} disabled={disabled}/>
-                <input placeholder='senha' type='password' name='password' required value={form.password} onChange={handleForm} disabled={disabled}/>
-                <input placeholder='nome' type='text' name='name'  required value={form.name} onChange={handleForm} disabled={disabled}/>
-                <input placeholder='foto' type='url' name='image' required value={form.image} onChange={handleForm} disabled={disabled}/>
+                <input data-identifier="input-email" placeholder='email' name='email' type='email' required value={form.email} onChange={handleForm} disabled={disabled}/>
+                <input data-identifier="input-password" placeholder='senha' type='password' name='password' required value={form.password} onChange={handleForm} disabled={disabled}/>
+                <input data-identifier="input-name" placeholder='nome' type='text' name='name'  required value={form.name} onChange={handleForm} disabled={disabled}/>
+                <input data-identifier="input-photo" placeholder='foto' type='url' name='image' required value={form.image} onChange={handleForm} disabled={disabled}/>
                 <button type="submit" disabled={disabled}>{disabled
                 ?<ThreeDots 
                 height="17" 
@@ -82,7 +82,7 @@ export default function RegisterPage(){
                 :<p>Cadastrar</p>
                 }</button>
 		    </form>
-                <h1 onClick={goToLogin} >Já tem uma conta? Faça login!</h1>
+                <h1 data-identifier="back-to-login-action" onClick={goToLogin} >Já tem uma conta? Faça login!</h1>
             {isShure&&<Shure onClick={()=>setIsShure(false)}>
                 <ShureDiv onClick={(e) => e.stopPropagation()}>
                     <h3>{message}</h3>

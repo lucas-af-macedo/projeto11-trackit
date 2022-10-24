@@ -29,11 +29,11 @@ export default function Habits({f, response,weekList}){
     return(
         <>
         <Container>
-            <h3>{f.name}</h3>
+            <h3 data-identifier="habit-name">{f.name}</h3>
             <HabitBox>
             {weekList.map((day,index)=><HabitsWeek key={index} days={f.days} day={day} index={index}/>)}
             </HabitBox>
-            <img src={trash} onClick={()=>setIsShure(true)} alt='remove'/>
+            <img data-identifier="delete-habit-btn" src={trash} onClick={()=>setIsShure(true)} alt='remove'/>
         </Container>
         {isShure&&<Shure onClick={()=>setIsShure(false)}>
             <ShureDiv onClick={(e) => e.stopPropagation()}>

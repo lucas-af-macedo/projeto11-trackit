@@ -24,7 +24,7 @@ export default function Week({f,index, daysList, setDaysList, disabled, selected
     }
     return(
         <>
-        <Day disabled={disabled} type="button" selected={selectedList[index]} onClick={selectDay} >{f}</Day>
+        <Day data-identifier="week-day-btn" disabled={disabled} type="button" selected={selectedList[index]} onClick={selectDay} >{f}</Day>
         </>
     )
 }

@@ -77,17 +77,17 @@ export default function HabitsPage(){
         <Container>
             <MyHabit>
                 <h1>Meus hábitos</h1>
-                <div onClick={()=>setAddHabit(true)}><h3>+</h3></div>
+                <div data-identifier="create-habit-btn" onClick={()=>setAddHabit(true)}><h3>+</h3></div>
             </MyHabit>
            {addHabit?<AddHabitBox >
                 <form onSubmit={submit}>
-                    <input disabled={disabled} value={inputValue} onChange={(e)=>setInputValue(e.target.value)} placeholder='nome do hábito' type='text' required/>
+                    <input data-identifier="input-habit-name" disabled={disabled} value={inputValue} onChange={(e)=>setInputValue(e.target.value)} placeholder='nome do hábito' type='text' required/>
                     <WeekBox>
                         {weekList.map((f,index)=><Week selectedList={selectedList} setSelectedList={setSelectedList} disabled={disabled} key={index} f={f} index={index} daysList={daysList} setDaysList={setDaysList} />)}
                     </WeekBox>
                     <WeekButtons>
-                        <h3 onClick={wipe}>Cancelar</h3>
-                        <button disabled={disabled} type='submit'>{disabled?<ThreeDots 
+                        <h3 data-identifier="cancel-habit-create-btn" onClick={wipe}>Cancelar</h3>
+                        <button data-identifier="save-habit-create-btn" disabled={disabled} type='submit'>{disabled?<ThreeDots 
                     height="10" 
                     width="84" 
                     radius="9"
@@ -102,7 +102,7 @@ export default function HabitsPage(){
             </AddHabitBox>:null}
             {habitsList.length
             ?habitsList.map((f)=><Habits response={response} key={f.id} f={f} weekList={weekList}></Habits>)
-            :<h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>}
+            :<h2 data-identifier="no-habit-message">Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>}
            
         </Container>
         </>

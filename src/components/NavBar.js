@@ -15,11 +15,11 @@ export default function NavBar(){
                     <Header>
                         <Logo onClick={()=>navigate('/hoje')}>TrackIt</Logo>
                         <div>
-                            <img src={userData.image} alt='User'/>
+                            <img data-identifier="avatar" src={userData.image} alt='User'/>
                         </div>
                     </Header>
                     <Footer>
-                        <h1 onClick={()=>navigate('/habitos')}>Hábitos</h1>
+                        <h1 data-identifier="habit-page-action" onClick={()=>navigate('/habitos')}>Hábitos</h1>
                         <Circle onClick={()=>navigate('/hoje')}>
                             <CircularProgressbar
                                 value={today}
@@ -34,7 +34,7 @@ export default function NavBar(){
                                 })}
                             />
                         </Circle>
-                        <h1 onClick={()=>navigate('/historico')}>Histórico</h1>
+                        <h1 data-identifier="historic-page-action" onClick={()=>navigate('/historico')}>Histórico</h1>
                     </Footer>
                 </>
             :null}

@@ -68,8 +68,8 @@ export default function TodayPage(){
     return(
         <>
         <Container today={today}>
-            <h1>{getDay()}</h1>
-            {today? <h2>{Math.round(today)}% dos hábitos concluídos</h2>:<h2>Nenhum hábito concluído ainda</h2>}
+            <h1 data-identifier="today-infos">{getDay()}</h1>
+            {today? <h2 data-identifier="today-infos">{Math.round(today)}% dos hábitos concluídos</h2>:<h2>Nenhum hábito concluído ainda</h2>}
             {listHabits.map((f,index) => (
                 <HabitContainer key={f.id} f={f} index={index} listHabits={listHabits} setListHabits={setListHabits}/>
             ))}

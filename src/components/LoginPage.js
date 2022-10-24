@@ -68,9 +68,9 @@ export default function LoginPage(){
         <Container>
             <img src={logo} alt = 'logo'/>
             <form onSubmit={PostLogin}>
-                <input placeholder='email' type='email' name='email' required value={form.email} onChange={handleForm} disabled={disabled}/>
-                <input placeholder='senha' type='password' name='password' required value={form.password} onChange={handleForm} disabled={disabled}/>
-                <button data-identifier="reservation-btn" type="submit" disabled={disabled}>{disabled
+                <input data-identifier="input-email" placeholder='email' type='email' name='email' required value={form.email} onChange={handleForm} disabled={disabled}/>
+                <input data-identifier="input-password" placeholder='senha' type='password' name='password' required value={form.password} onChange={handleForm} disabled={disabled}/>
+                <button data-identifier="login-btn" type="submit" disabled={disabled}>{disabled
                 ?<ThreeDots 
                     height="17" 
                     width="290" 
@@ -83,7 +83,7 @@ export default function LoginPage(){
                  />
                  :<p>Entrar</p>}</button>
 		    </form>
-                <h1 onClick={goToRegister} >Não tem uma conta? Cadastre-se!</h1>
+                <h1 data-identifier="sign-up-action" onClick={goToRegister} >Não tem uma conta? Cadastre-se!</h1>
             {isShure&&<Shure onClick={()=>setIsShure(false)}>
                 <ShureDiv onClick={(e) => e.stopPropagation()}>
                     <h3>{message}</h3>
