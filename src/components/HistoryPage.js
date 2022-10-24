@@ -6,13 +6,21 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import 'react-calendar/dist/Calendar.css';
+
 
 
 export default function HistoryPage(){
-    const navigate = useNavigate()
+    const {userData} = useContext(MyContext)
+    const [value, onChange] = useState(new Date());
     const [dayList,setDayList] = useState([])
     const [done,setDone] = useState([])
     const [notDone,setNotDone] = useState([])
+    const [habitsInADay,setHabitsInADay] = useState([])
+    
+    const navigate = useNavigate()
+    let locale = 'pt'
+
     useEffect(() => {
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily'
         const config = {
@@ -21,11 +29,13 @@ export default function HistoryPage(){
             }
         }
         const request = axios.get(URL, config)
+
         request.then(answer => {
             const listHabits = answer.data
             setDayList(listHabits)
             let arrayDone = []
             let arrayNotDone = []
+
             for(let i=0;i<listHabits.length;i++){
                 let listTest = listHabits[i].habits.filter((f)=>!f.done)
                 if(listTest.length>0){
@@ -34,21 +44,28 @@ export default function HistoryPage(){
                     arrayDone.push(listHabits[i].day)
                 }
             }
+
             setDone(arrayDone)
             setNotDone(arrayNotDone)
         })
+
         request.catch(error => {
             navigate('/')
         })
     },[setDayList, navigate]);
-    let locale = 'pt'
-    const [value, onChange] = useState(new Date());
-    const {userData} = useContext(MyContext)
+
+    
     function test (e){
         onChange(e)
-        console.log(dayList)
-        console.log(value.getUTCDate())
+        let indexDate = dayList.findIndex((f)=>f.day===dayjs(e).format("DD/MM/YYYY"))
+        if(indexDate!==-1){
+            console.log(dayList[indexDate])
+            setHabitsInADay(dayList[indexDate].habits)
+        }else{
+            setHabitsInADay([])
+        }
     }
+
     return(
         <>
         <Container>
@@ -57,13 +74,32 @@ export default function HistoryPage(){
                 formatDay ={(locale, value) => dayjs(value).format('DD')}
                 tileClassName={({ date, view }) => {
                     if(done.find(x=>x===dayjs(date).format("DD/MM/YYYY"))){
-                     return  'oi'
+                     return  'done'
                     }
                     if(notDone.find(x=>x===dayjs(date).format("DD/MM/YYYY"))){
-                        return  'oi2'
+                        return  'not-done'
                        }
                   }}/>
             </CalendarDiv>
+            {habitsInADay.length?<InfoDay>
+                    <HabitsDoneTitle>Dia {dayjs(value).format("DD/MM")}</HabitsDoneTitle>
+                        {habitsInADay.map((f)=>
+                            <HabitsPast done={f.done}>{f.done?
+                                <ion-icon name="checkmark-circle"></ion-icon>
+                                :<ion-icon name="close-circle"></ion-icon>}
+                                <h3>{f.name}</h3>
+                            </HabitsPast>)}
+                    <Describe>
+                        <DescribeDone>
+                            <ion-icon name="checkmark-circle"></ion-icon>
+                            <h3>Concluído</h3>
+                        </DescribeDone>
+                        <DescribeNotDone>
+                            <ion-icon name="close-circle"></ion-icon>
+                            <h3>Não Concluído</h3>
+                        </DescribeNotDone>
+                    </Describe>
+                </InfoDay>:null}
         </Container>
         </>
     )
@@ -78,7 +114,8 @@ const Container = styled.div`
     padding-top: 90px;
     padding-bottom: 120px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     h1{
         font-family: 'Lexend Deca', sans-serif;
         color: #126BA5;
@@ -97,145 +134,86 @@ const CalendarDiv = styled.div`
     .react-calendar {
         border-radius: 10px;
         width: 350px;
-        max-width: 100%;
-        background: white;
         border: 0px;
-        font-family: Arial, Helvetica, sans-serif;
-        line-height: 1.125em;
-    }
-    .react-calendar--doubleView {
-        
-    }
-    .react-calendar--doubleView .react-calendar__viewContainer {
-        display: flex;
-        margin: -0.5em;
-    }
-    .react-calendar--doubleView .react-calendar__viewContainer > * {
-        width: 50%;
-        margin: 0.5em;
-    }
-    .react-calendar,
-    .react-calendar *,
-    .react-calendar *:before,
-    .react-calendar *:after {
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-    .react-calendar button {
-        margin: 0;
-        border: 0;
-        outline: none;
-    }
-    .react-calendar button:enabled:hover {
-        cursor: pointer;
-    }
-    .react-calendar__navigation {
-        display: flex;
-        height: 44px;
-        margin-bottom: 1em;
-    }
-    .react-calendar__navigation button {
-        min-width: 44px;
-        background: none;
-    }
-    .react-calendar__navigation button:disabled {
-        background-color: #f0f0f0;
-    }
-    .react-calendar__navigation button:enabled:hover,
-    .react-calendar__navigation button:enabled:focus {
-        background-color: #e6e6e6;
-    }
-    .react-calendar__month-view__weekdays {
-        text-align: center;
-        text-transform: uppercase;
-        font-weight: bold;
-        font-size: 0.75em;
-    }
-    .react-calendar__month-view__weekdays__weekday {
-    padding: 0.5em;
-    }
-    .react-calendar__month-view__weekNumbers .react-calendar__tile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75em;
-    font-weight: bold;
-    }
-    .react-calendar__month-view__days__day--weekend {
-    color: #d10000;
-    }
-    
-    /*.react-calendar__month-view__days__day--weekend abbr{
-    padding: 10px;
-    background-color: green;
-    border-radius: 20PX;
-    color: white;
-    }
-    
-    .react-calendar__month-view__days__day--neighboringMonth abbr {
-        background-color: transparent;
-        color: #757575
-    }*/
-    .react-calendar__month-view__days__day--neighboringMonth {
-    color: #757575;
-    }
-    .react-calendar__year-view .react-calendar__tile,
-    .react-calendar__decade-view .react-calendar__tile,
-    .react-calendar__century-view .react-calendar__tile {
-    padding: 2em 0.5em;
     }
     .react-calendar__tile {
-    max-width: 100%;
     height: 50px;
-    padding: 10px 6.6667px;
-    background: none;
-    text-align: center;
-    line-height: 16px;
-    }
-    .react-calendar__tile:disabled {
-    background-color: #f0f0f0;
-    }
-    .react-calendar__tile:enabled:hover,
-    .react-calendar__tile:enabled:focus {
-    background-color: #e6e6e6;
-    }
-    .react-calendar__tile--now {
-    background: #ffff76;
-    }
-    .react-calendar__tile--now:enabled:hover,
-    .react-calendar__tile--now:enabled:focus {
-    background: #ffffa9;
-    }
-    .react-calendar__tile--hasActive {
-    background: #76baff;
-    }
-    .react-calendar__tile--hasActive:enabled:hover,
-    .react-calendar__tile--hasActive:enabled:focus {
-    background: #a9d4ff;
-    }
-    .react-calendar__tile--active {
-    background: #006edc;
-    color: white;
-    }
-    .react-calendar__tile--active:enabled:hover,
-    .react-calendar__tile--active:enabled:focus {
-    background: #1087ff;
-    }
-    .react-calendar--selectRange .react-calendar__tile--hover {
-    background-color: #e6e6e6;
     }
     
-    .oi abbr{
+    .done abbr{
         padding: 10px;
         background-color: #8cc654;
         border-radius: 20PX;
         color: white;
     }
-    .oi2 abbr{
+    .not-done abbr{
         padding: 10px;
         color: white;
         background-color: #ea5766;
         border-radius: 20PX;
+    }
+`
+const InfoDay = styled.div`
+    width: 350px;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 20px;
+`
+const HabitsDoneTitle = styled.h3`
+    font-family: 'Lexend Deca', sans-serif;
+    color: #126BA5;
+    font-size: 23px;
+    font-weight: 400;
+    margin-bottom: 20px;
+`
+const HabitsPast = styled.div`
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: ${props=>props.done?'#8cc654':'#ea5766'};
+    display: flex;
+    align-items: center;
+    ion-icon{
+        margin-right: 5px;
+        width: 24px;
+        height: 24px;
+    }
+`
+const Describe = styled.div`
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+
+    justify-content: space-evenly;
+    background-color: #EFEFEF;
+    border-radius: 5px;
+    div{
+        display: flex;
+        align-items: center;
+    }
+    h3{
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 15px;
+    }
+`
+const DescribeDone = styled.div`
+    display: flex;
+    align-items: center;
+    ion-icon{
+        color: #8cc654;
+        width: 24px;
+        height: 24px;
+        margin-right: 5px;
+    }
+`
+const DescribeNotDone = styled.div`
+    display: flex;
+    align-items: center;
+    ion-icon{
+        color: #ea5766;
+        width: 24px;
+        height: 24px;
+        margin-right: 5px;
     }
 `
