@@ -1,6 +1,6 @@
 import MyContext from '../contexts/myContext'
 import styled from 'styled-components'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import Week from './Week';
@@ -17,7 +17,7 @@ export default function HabitsPage(){
     const [habitsList, setHabitsList] = useState([])
     const weekList = ['D','S','T','Q','Q','S','S']
     const [selectedList,setSelectedList] = useState(weekList.map(()=>false))
-    function response(){
+    const response = useCallback(()=>{
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
         const config = {
             headers: {
@@ -31,7 +31,7 @@ export default function HabitsPage(){
         request.catch(error => {
             navigate('/')
         })
-    }
+    },[setHabitsList, userData,navigate])
     useEffect(() => {
         response()
     },[response]);
@@ -58,19 +58,17 @@ export default function HabitsPage(){
                 Authorization: `Bearer ${userData.token}`
             }
         }
-        console.log(body)
         const request = axios.post(URL, body, config)
         request.then(answer => {
-            console.log(answer)
             setDisabled(false)
+            response()
             wipe2()
         })
         request.catch(error => {
-            console.log(error)
             setDisabled(false)
+            response()
             wipe2()
         })
-        response()
     }
 
     return(
@@ -102,7 +100,7 @@ export default function HabitsPage(){
                 </form>
             </AddHabitBox>:null}
             {habitsList.length
-            ?habitsList.map((f)=><Habits key={f.id} f={f} weekList={weekList}></Habits>)
+            ?habitsList.map((f)=><Habits response={response} key={f.id} f={f} weekList={weekList}></Habits>)
             :<h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>}
            
         </Container>

@@ -13,7 +13,7 @@ export default function NavBar(){
             {userData?
                 <>
                     <Header>
-                        <h1>TrackIt</h1>
+                        <Logo onClick={()=>navigate('/hoje')}>TrackIt</Logo>
                         <div>
                             <img src={userData.image} alt='User'/>
                         </div>
@@ -103,4 +103,8 @@ const Circle = styled.div`
     svg{
        cursor: pointer;
     }
+`
+
+const Logo = styled.h1`
+    cursor: pointer;
 `

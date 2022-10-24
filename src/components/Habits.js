@@ -2,11 +2,11 @@ import styled from "styled-components"
 import HabitsWeek from "./HabitsWeek"
 import trash from '../assets/img/trash2.png'
 import axios from "axios"
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import MyContext from '../contexts/myContext'
 import { useNavigate } from "react-router-dom";
 
-export default function Habits({f, weekList}){
+export default function Habits({f, response,weekList}){
     const [isShure,setIsShure] = useState(false)
     const navigate = useNavigate()
     const {userData} = useContext(MyContext)
@@ -20,7 +20,7 @@ export default function Habits({f, weekList}){
         }
         const request = axios.delete(URL, config)
         request.then(answer => {
-            console.log(answer.data)
+            response()
         })
         request.catch(error => {
             navigate('/')
@@ -31,7 +31,7 @@ export default function Habits({f, weekList}){
         <Container>
             <h3>{f.name}</h3>
             <HabitBox>
-            {weekList.map((day,index)=><HabitsWeek days={f.days} day={day} index={index}/>)}
+            {weekList.map((day,index)=><HabitsWeek key={index} days={f.days} day={day} index={index}/>)}
             </HabitBox>
             <img src={trash} onClick={()=>setIsShure(true)} alt='remove'/>
         </Container>

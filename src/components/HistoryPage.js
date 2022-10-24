@@ -19,7 +19,6 @@ export default function HistoryPage(){
     const [habitsInADay,setHabitsInADay] = useState([])
     
     const navigate = useNavigate()
-    let locale = 'pt'
 
     useEffect(() => {
         const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily'
@@ -52,14 +51,13 @@ export default function HistoryPage(){
         request.catch(error => {
             navigate('/')
         })
-    },[setDayList, navigate]);
+    },[setDayList, setDone, setNotDone, userData, navigate]);
 
     
     function test (e){
         onChange(e)
         let indexDate = dayList.findIndex((f)=>f.day===dayjs(e).format("DD/MM/YYYY"))
         if(indexDate!==-1){
-            console.log(dayList[indexDate])
             setHabitsInADay(dayList[indexDate].habits)
         }else{
             setHabitsInADay([])
@@ -83,8 +81,8 @@ export default function HistoryPage(){
             </CalendarDiv>
             {habitsInADay.length?<InfoDay>
                     <HabitsDoneTitle>Dia {dayjs(value).format("DD/MM")}</HabitsDoneTitle>
-                        {habitsInADay.map((f)=>
-                            <HabitsPast done={f.done}>{f.done?
+                        {habitsInADay.map((f, index)=>
+                            <HabitsPast key={index} done={f.done}>{f.done?
                                 <ion-icon name="checkmark-circle"></ion-icon>
                                 :<ion-icon name="close-circle"></ion-icon>}
                                 <h3>{f.name}</h3>
@@ -151,6 +149,22 @@ const CalendarDiv = styled.div`
         color: white;
         background-color: #ea5766;
         border-radius: 20PX;
+    }
+    .react-calendar__tile--now.done abbr {
+        background-color: transparent;
+        color: #60DF60;
+    }
+    .react-calendar__tile--now.not-done abbr{
+        background-color: transparent;
+        color: #ea5766;
+    }
+    .react-calendar__tile--active.done abbr {
+        background-color: transparent;
+        color: #60DF60;
+    }
+    .react-calendar__tile--active.not-done abbr{
+        background-color: transparent;
+        color: red;
     }
 `
 const InfoDay = styled.div`

@@ -26,7 +26,7 @@ export default function TodayPage(){
         request.catch(error => {
             navigate('/')
         })
-    },[setListHabits, navigate]);
+    },[setListHabits, setToday, userData, navigate]);
 
     function getDay(){
         let weekDay = ''
